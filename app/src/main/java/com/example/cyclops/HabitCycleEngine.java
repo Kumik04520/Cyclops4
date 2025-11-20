@@ -1,8 +1,7 @@
-package com.example.cyclops.utils;
+package com.example.cyclops;
 
 import com.example.cyclops.model.HabitCycle;
 import com.example.cyclops.model.DayTask;
-import java.util.Calendar;
 
 public class HabitCycleEngine {
 
@@ -22,20 +21,35 @@ public class HabitCycleEngine {
         long daysPassed = diff / (24 * 60 * 60 * 1000);
 
         // 使用模运算确定当前在循环中的位置
+        // 确保天数在 1 到 cycleLength 之间
         int currentDay = (int) (daysPassed % habitCycle.getCycleLength()) + 1;
 
-        return currentDay;
+        return Math.max(1, Math.min(habitCycle.getCycleLength(), currentDay));
     }
 
     /**
-     * 获取当前天的任务
+     * 获取当前天的任务（只返回未完成的任务）
      */
     public static DayTask getCurrentDayTask(HabitCycle habitCycle) {
         int currentDay = calculateCurrentDay(habitCycle);
         if (habitCycle.getDayTasks() != null && !habitCycle.getDayTasks().isEmpty()) {
-            // 确保天数在有效范围内
-            int actualDay = (currentDay - 1) % habitCycle.getDayTasks().size();
-            return habitCycle.getDayTasks().get(actualDay);
+            // 确保天数在有效范围内（0-based index）
+            int actualDayIndex = Math.min(currentDay - 1, habitCycle.getDayTasks().size() - 1);
+            DayTask task = habitCycle.getDayTasks().get(actualDayIndex);
+
+            // 重要：只返回未完成的任务
+            if (task != null && !task.isCompleted()) {
+                return task;
+            }
+        }
+        return null;
+    }
+
+    public static DayTask getCurrentDayTaskForDisplay(HabitCycle habitCycle) {
+        int currentDay = calculateCurrentDay(habitCycle);
+        if (habitCycle.getDayTasks() != null && !habitCycle.getDayTasks().isEmpty()) {
+            int actualDayIndex = Math.min(currentDay - 1, habitCycle.getDayTasks().size() - 1);
+            return habitCycle.getDayTasks().get(actualDayIndex);
         }
         return null;
     }
@@ -46,47 +60,13 @@ public class HabitCycleEngine {
     public static boolean isNewDay(HabitCycle habitCycle, long lastCompletionTime) {
         if (lastCompletionTime == 0) return true;
 
-        Calendar lastCal = Calendar.getInstance();
+        java.util.Calendar lastCal = java.util.Calendar.getInstance();
         lastCal.setTimeInMillis(lastCompletionTime);
 
-        Calendar currentCal = Calendar.getInstance();
+        java.util.Calendar currentCal = java.util.Calendar.getInstance();
 
-        return lastCal.get(Calendar.YEAR) != currentCal.get(Calendar.YEAR) ||
-                lastCal.get(Calendar.MONTH) != currentCal.get(Calendar.MONTH) ||
-                lastCal.get(Calendar.DAY_OF_MONTH) != currentCal.get(Calendar.DAY_OF_MONTH);
-    }
-
-    /**
-     * 计算连续完成天数
-     */
-    public static int calculateStreak(HabitCycle habitCycle, long[] completionDates) {
-        // 简化实现：按时间顺序检查连续完成
-        if (completionDates == null || completionDates.length == 0) {
-            return 0;
-        }
-
-        int streak = 0;
-        Calendar cal = Calendar.getInstance();
-
-        // 按日期倒序检查连续性
-        for (int i = completionDates.length - 1; i >= 0; i--) {
-            cal.setTimeInMillis(completionDates[i]);
-            // 这里需要更复杂的日期连续性检查
-            // 简化：假设数组是按时间排序的
-            if (i == completionDates.length - 1) {
-                streak = 1;
-            } else {
-                // 检查是否连续（相差1天）
-                long diff = completionDates[i + 1] - completionDates[i];
-                long daysDiff = diff / (24 * 60 * 60 * 1000);
-                if (daysDiff == 1) {
-                    streak++;
-                } else {
-                    break;
-                }
-            }
-        }
-
-        return streak;
+        return lastCal.get(java.util.Calendar.YEAR) != currentCal.get(java.util.Calendar.YEAR) ||
+                lastCal.get(java.util.Calendar.MONTH) != currentCal.get(java.util.Calendar.MONTH) ||
+                lastCal.get(java.util.Calendar.DAY_OF_MONTH) != currentCal.get(java.util.Calendar.DAY_OF_MONTH);
     }
 }

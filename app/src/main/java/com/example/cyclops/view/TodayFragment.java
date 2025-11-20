@@ -1,11 +1,13 @@
 package com.example.cyclops.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,14 +57,18 @@ public class TodayFragment extends Fragment {
         adapter = new HabitCycleAdapter(null, new HabitCycleAdapter.OnHabitClickListener() {
             @Override
             public void onHabitClick(HabitCycle habitCycle) {
-                // 打开习惯详情
                 openHabitDetail(habitCycle);
             }
 
             @Override
             public void onCompleteClick(HabitCycle habitCycle) {
+                // 显示完成动画或反馈
+                showCompletionFeedback(habitCycle);
+
                 // 完成任务
-                todayViewModel.completeTask(habitCycle.getId());
+                if (todayViewModel != null) {
+                    todayViewModel.completeTask(habitCycle.getId());
+                }
             }
         });
 
@@ -70,43 +76,70 @@ public class TodayFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
+    private void showCompletionFeedback(HabitCycle habitCycle) {
+        // 可以在这里添加完成动画
+        Toast.makeText(getContext(), "已完成: " + habitCycle.getName(), Toast.LENGTH_SHORT).show();
+    }
+
     private void observeViewModel() {
+        // 观察今日习惯列表
         todayViewModel.getTodayHabitsLiveData().observe(getViewLifecycleOwner(), habits -> {
             if (habits != null) {
                 adapter.updateData(habits);
-                updateProgress(habits.size());
+                android.util.Log.d("TodayFragment", "习惯列表更新: " + habits.size() + "个任务");
             }
         });
 
+        // 观察完成计数
         todayViewModel.getCompletedCountLiveData().observe(getViewLifecycleOwner(), completedCount -> {
             if (completedCount != null) {
                 tvCompletedCount.setText(String.valueOf(completedCount));
+                updateProgress();
+                android.util.Log.d("TodayFragment", "完成计数更新: " + completedCount);
             }
         });
 
+        // 观察总任务数
+        todayViewModel.getTotalCountLiveData().observe(getViewLifecycleOwner(), totalCount -> {
+            if (totalCount != null) {
+                tvTotalCount.setText(String.valueOf(totalCount));
+                updateProgress();
+                android.util.Log.d("TodayFragment", "总任务数更新: " + totalCount);
+            }
+        });
+
+        // 观察错误信息
         todayViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
-                // 显示错误信息
-                // Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                android.util.Log.e("TodayFragment", "错误信息: " + errorMessage);
             }
         });
     }
 
-    private void updateProgress(int totalCount) {
-        tvTotalCount.setText(String.valueOf(totalCount));
-        if (totalCount > 0) {
-            Integer completedCount = todayViewModel.getCompletedCountLiveData().getValue();
-            if (completedCount != null) {
+    private void updateProgress() {
+        Integer totalCount = todayViewModel.getTotalCountLiveData().getValue();
+        Integer completedCount = todayViewModel.getCompletedCountLiveData().getValue();
+
+        if (totalCount != null && completedCount != null) {
+            if (totalCount > 0) {
                 int progress = (completedCount * 100) / totalCount;
                 progressBar.setProgress(progress);
+                android.util.Log.d("TodayFragment", "更新进度: " + completedCount + "/" + totalCount + " = " + progress + "%");
+            } else {
+                progressBar.setProgress(0);
+                android.util.Log.d("TodayFragment", "更新进度: 0/0 = 0%");
             }
+        } else {
+            progressBar.setProgress(0);
+            android.util.Log.d("TodayFragment", "更新进度: 数据为空");
         }
     }
 
     private void openHabitDetail(HabitCycle habitCycle) {
-        // 打开习惯详情页面的逻辑
-        // Intent intent = new Intent(getContext(), HabitDetailActivity.class);
-        // intent.putExtra("HABIT_ID", habitCycle.getId());
-        // startActivity(intent);
+        // 打开习惯详情
+        Intent intent = new Intent(getContext(), HabitDetailActivity.class);
+        intent.putExtra("HABIT_ID", habitCycle.getId());
+        startActivity(intent);
     }
 }

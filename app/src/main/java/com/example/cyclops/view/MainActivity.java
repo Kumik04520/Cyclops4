@@ -1,5 +1,6 @@
 package com.example.cyclops.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,7 +9,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.cyclops.R;
 import com.example.cyclops.adapter.MainPagerAdapter;
-import com.example.cyclops.database.DatabaseTestHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -23,9 +23,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        // 运行数据库测试
-        DatabaseTestHelper.runDatabaseTests(getApplication());
 
         initViews();
         setupViewPager();
@@ -94,11 +91,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openHabitCreation() {
-        // Intent intent = new Intent(this, HabitCreationActivity.class);
-        // startActivity(intent);
+        Intent intent = new Intent(this, HabitCreationActivity.class);
+        startActivity(intent);
     }
 
     private void shareStats() {
+        // 分享功能
         // Intent shareIntent = new Intent(Intent.ACTION_SEND);
         // shareIntent.setType("text/plain");
         // shareIntent.putExtra(Intent.EXTRA_TEXT, "看看我在Cyclops上的习惯统计！");

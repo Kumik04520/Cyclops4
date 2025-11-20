@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cyclops.R;
 import com.example.cyclops.model.HabitCycle;
-import com.example.cyclops.utils.HabitCycleEngine;
+import com.example.cyclops.HabitCycleEngine;
 
 // 移除 static 关键字
 public class HabitViewHolder extends RecyclerView.ViewHolder {

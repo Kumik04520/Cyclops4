@@ -1,6 +1,5 @@
 package com.example.cyclops.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,7 +8,7 @@ public class HabitCycle {
     private String name;
     private String description;
     private int cycleLength;
-    private List<com.example.cyclops.model.DayTask> dayTasks;
+    private List<DayTask> dayTasks;
     private String userId;
     private long startDate;
     private boolean isPublic;
@@ -18,8 +17,17 @@ public class HabitCycle {
 
     public HabitCycle() {
         this.id = UUID.randomUUID().toString();
-        this.dayTasks = new ArrayList<>();
-        this.startDate = System.currentTimeMillis();
+        this.startDate = System.currentTimeMillis(); // 设置开始时间为当前时间
+        this.currentStreak = 0;
+        this.totalCompletions = 0;
+    }
+
+    public HabitCycle(String name, String description, int cycleLength, List<DayTask> dayTasks) {
+        this();
+        this.name = name;
+        this.description = description;
+        this.cycleLength = cycleLength;
+        this.dayTasks = dayTasks;
     }
 
     // Getters and Setters
@@ -35,14 +43,10 @@ public class HabitCycle {
     public int getCycleLength() { return cycleLength; }
     public void setCycleLength(int cycleLength) {
         this.cycleLength = cycleLength;
-        // 自动创建对应天数的任务
-        while (dayTasks.size() < cycleLength) {
-            dayTasks.add(new com.example.cyclops.model.DayTask(dayTasks.size() + 1, "Day " + (dayTasks.size() + 1)));
-        }
     }
 
-    public List<com.example.cyclops.model.DayTask> getDayTasks() { return dayTasks; }
-    public void setDayTasks(List<com.example.cyclops.model.DayTask> dayTasks) { this.dayTasks = dayTasks; }
+    public List<DayTask> getDayTasks() { return dayTasks; }
+    public void setDayTasks(List<DayTask> dayTasks) { this.dayTasks = dayTasks; }
 
     public String getUserId() { return userId; }
     public void setUserId(String userId) { this.userId = userId; }
@@ -60,7 +64,7 @@ public class HabitCycle {
     public void setTotalCompletions(int totalCompletions) { this.totalCompletions = totalCompletions; }
 
     public void updateDayTask(int dayIndex, String taskName) {
-        if (dayIndex >= 0 && dayIndex < dayTasks.size()) {
+        if (dayTasks != null && dayIndex >= 0 && dayIndex < dayTasks.size()) {
             dayTasks.get(dayIndex).setTaskName(taskName);
         }
     }

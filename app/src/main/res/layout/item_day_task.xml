@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="?android:attr/selectableItemBackground">
+
+        <!-- 天数标识 -->
+        <TextView
+            android:id="@+id/tv_day_number"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/circle_background"
+            android:layout_marginEnd="12dp" />
+
+        <!-- 任务描述输入框 -->
+        <EditText
+            android:id="@+id/et_task_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="任务描述"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:background="@android:color/transparent"
+            android:padding="8dp"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:layout_gravity="center_vertical" />
+
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

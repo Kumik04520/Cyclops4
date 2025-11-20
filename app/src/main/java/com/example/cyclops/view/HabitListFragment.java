@@ -1,10 +1,12 @@
 package com.example.cyclops.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,14 +81,20 @@ public class HabitListFragment extends Fragment {
         habitViewModel.getHabitsLiveData().observe(getViewLifecycleOwner(), habits -> {
             if (habits != null) {
                 adapter.updateData(habits);
-                updateEmptyState(habits.isEmpty());
+                android.util.Log.d("HabitFragment", "习惯列表更新，数量: " + habits.size());
+
+                // 打印每个习惯的状态用于调试
+                for (HabitCycle habit : habits) {
+                    android.util.Log.d("HabitFragment", "习惯: " + habit.getName() +
+                            ", 连续天数: " + habit.getCurrentStreak() +
+                            ", 完成次数: " + habit.getTotalCompletions());
+                }
             }
         });
 
         habitViewModel.getErrorMessageLiveData().observe(getViewLifecycleOwner(), errorMessage -> {
             if (errorMessage != null && !errorMessage.isEmpty()) {
-                // 显示错误信息
-                // Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -103,8 +111,8 @@ public class HabitListFragment extends Fragment {
 
     private void openHabitDetail(HabitCycle habitCycle) {
         // 打开习惯详情页面的逻辑
-        // Intent intent = new Intent(getContext(), HabitDetailActivity.class);
-        // intent.putExtra("HABIT_ID", habitCycle.getId());
-        // startActivity(intent);
+        Intent intent = new Intent(getContext(), HabitDetailActivity.class);
+        intent.putExtra("HABIT_ID", habitCycle.getId());
+        startActivity(intent);
     }
 }

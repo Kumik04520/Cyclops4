@@ -15,8 +15,7 @@ public class Application extends android.app.Application {
         // 初始化Repository
         habitRepository = RoomHabitRepository.getInstance(this);
 
-        // 初始化示例数据
-        habitRepository.initializeSampleData();
+
     }
 
     public static Application getInstance() {

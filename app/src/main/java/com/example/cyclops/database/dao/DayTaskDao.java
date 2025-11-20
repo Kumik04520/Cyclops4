@@ -28,4 +28,5 @@ public interface DayTaskDao {
 
     @Query("DELETE FROM day_tasks WHERE habit_cycle_id = :habitCycleId")
     void deleteByHabitCycleId(String habitCycleId);
+
 }
