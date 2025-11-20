@@ -1,7 +1,6 @@
 package com.example.cyclops.repository;
 
 import android.app.Application;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -25,8 +24,8 @@ public class RoomHabitRepository implements HabitRepository {
     private final Executor executor;
     private final MutableLiveData<String> errorLiveData;
 
-    // 临时用户ID，后续集成认证系统时替换
-    private static final String TEMP_USER_ID = "temp_user_001";
+    // 【关键修复】定义统一的用户 ID 常量 (空字符串)，确保插入和查询一致
+    private static final String CURRENT_USER_ID = "";
 
     private RoomHabitRepository(Application application) {
         AppDatabase database = AppDatabase.getInstance(application);
@@ -43,28 +42,25 @@ public class RoomHabitRepository implements HabitRepository {
         return instance;
     }
 
-    public LiveData<String> getErrorLiveData() {
-        return errorLiveData;
-    }
-
     @Override
     public void addHabitCycle(HabitCycle habitCycle) {
         executor.execute(() -> {
             try {
-                // 设置用户ID
-                habitCycle.setUserId(TEMP_USER_ID);
+                // 【关键修复 1】强制设置 userId，避免 null
+                habitCycle.setUserId(CURRENT_USER_ID);
 
                 HabitCycleEntity entity = Mapper.toHabitCycleEntity(habitCycle);
-                long id = habitCycleDao.insert(entity);
+                habitCycleDao.insert(entity);
 
-                // 插入每日任务
+                // 确保子任务关联正确
                 if (entity.dayTasks != null && !entity.dayTasks.isEmpty()) {
+                    // 【关键修复 2】确保每个 DayTaskEntity 都有正确的 Habit ID
+                    for (com.example.cyclops.database.entity.DayTaskEntity task : entity.dayTasks) {
+                        task.habitCycleId = entity.id;
+                    }
                     dayTaskDao.insertAll(entity.dayTasks);
                 }
-
-                android.util.Log.d("RoomHabitRepository", "添加习惯成功: " + habitCycle.getName());
             } catch (Exception e) {
-                android.util.Log.e("RoomHabitRepository", "添加习惯失败: " + e.getMessage(), e);
                 errorLiveData.postValue("添加习惯失败: " + e.getMessage());
             }
         });
@@ -74,18 +70,13 @@ public class RoomHabitRepository implements HabitRepository {
     public void updateHabitCycle(HabitCycle habitCycle) {
         executor.execute(() -> {
             try {
+                habitCycle.setUserId(CURRENT_USER_ID); // 确保更新时也不丢失 UserID
                 HabitCycleEntity entity = Mapper.toHabitCycleEntity(habitCycle);
                 habitCycleDao.update(entity);
 
-                // 更新每日任务 - 先删除旧的，再插入新的
-                dayTaskDao.deleteByHabitCycleId(habitCycle.getId());
-                if (entity.dayTasks != null && !entity.dayTasks.isEmpty()) {
-                    dayTaskDao.insertAll(entity.dayTasks);
-                }
-
-                android.util.Log.d("RoomHabitRepository", "更新习惯成功: " + habitCycle.getName());
+                // 如果任务有变动，这里简单处理可能需要更复杂的逻辑
+                // 但通常 update 只更新 habit 信息，任务详情在 Detail 页单独处理
             } catch (Exception e) {
-                android.util.Log.e("RoomHabitRepository", "更新习惯失败: " + e.getMessage(), e);
                 errorLiveData.postValue("更新习惯失败: " + e.getMessage());
             }
         });
@@ -95,15 +86,10 @@ public class RoomHabitRepository implements HabitRepository {
     public void deleteHabitCycle(String habitId) {
         executor.execute(() -> {
             try {
-                // 先删除关联的每日任务
-                dayTaskDao.deleteByHabitCycleId(habitId);
-
-                // 然后删除习惯循环
-                habitCycleDao.deleteById(habitId);
-
-                android.util.Log.d("RoomHabitRepository", "删除习惯成功: " + habitId);
+                HabitCycleEntity entity = new HabitCycleEntity();
+                entity.id = habitId;
+                habitCycleDao.delete(entity);
             } catch (Exception e) {
-                android.util.Log.e("RoomHabitRepository", "删除习惯失败: " + e.getMessage(), e);
                 errorLiveData.postValue("删除习惯失败: " + e.getMessage());
             }
         });
@@ -111,8 +97,9 @@ public class RoomHabitRepository implements HabitRepository {
 
     @Override
     public LiveData<List<HabitCycle>> getAllHabitCycles() {
+        // 【关键修复 3】查询时使用相同的 ID 常量
         return Transformations.map(
-                habitCycleDao.getAllHabitCycles(TEMP_USER_ID),
+                habitCycleDao.getAllHabitCycles(CURRENT_USER_ID),
                 Mapper::toHabitCycleList
         );
     }
@@ -125,66 +112,40 @@ public class RoomHabitRepository implements HabitRepository {
         );
     }
 
-    /**
-     * Synchronous method to get HabitCycle by ID - for use in background threads only
-     */
+    // 同步方法实现
+    @Override
     public HabitCycle getHabitCycleByIdSync(String habitId) {
-        try {
-            HabitCycleEntity entity = habitCycleDao.getHabitCycleByIdSync(habitId);
-            return Mapper.toHabitCycle(entity);
-        } catch (Exception e) {
-            android.util.Log.e("RoomHabitRepository", "Error getting habit by ID: " + e.getMessage(), e);
-            return null;
-        }
+        HabitCycleEntity entity = habitCycleDao.getHabitCycleByIdSync(habitId);
+        return Mapper.toHabitCycle(entity);
     }
 
     @Override
     public void completeDay(String habitId, int dayNumber) {
         executor.execute(() -> {
             try {
-                android.util.Log.d("RoomHabitRepository", "开始完成任务: " + habitId + ", 天数: " + dayNumber);
-
-                // 使用同步方法获取习惯信息
                 HabitCycleEntity entity = habitCycleDao.getHabitCycleByIdSync(habitId);
-                if (entity != null) {
-                    android.util.Log.d("RoomHabitRepository", "找到习惯: " + entity.name + ", 当前连续天数: " + entity.currentStreak + ", 总完成次数: " + entity.totalCompletions);
 
-                    // 关键修复：更新 entity 中的 dayTasks 列表的完成状态
-                    if (entity.dayTasks != null && !entity.dayTasks.isEmpty()) {
-                        for (com.example.cyclops.database.entity.DayTaskEntity task : entity.dayTasks) {
-                            if (task.dayNumber == dayNumber) {
-                                task.completed = true;
-                                android.util.Log.d("RoomHabitRepository", "更新任务完成状态: 第" + dayNumber + "天");
-                                break;
-                            }
-                        }
+                if (entity != null) {
+                    entity.currentStreak = entity.currentStreak + 1;
+
+                    if (entity.currentStreak > entity.bestStreak) {
+                        entity.bestStreak = entity.currentStreak;
                     }
 
-                    // 更新整个 entity（包含更新后的 dayTasks）
-                    entity.currentStreak = entity.currentStreak + 1;
                     entity.totalCompletions = entity.totalCompletions + 1;
                     entity.lastCompletionDate = new java.util.Date();
                     entity.updatedAt = new java.util.Date();
 
                     habitCycleDao.update(entity);
-                    android.util.Log.d("RoomHabitRepository", "更新习惯实体完成");
-
-                    // 同时更新 day_tasks 表（如果使用的话）
                     dayTaskDao.updateDayTaskCompletion(habitId, dayNumber, true);
-                    android.util.Log.d("RoomHabitRepository", "更新 day_tasks 表完成");
 
-                    android.util.Log.d("RoomHabitRepository", "完成任务成功: " + entity.name + " 第" + dayNumber + "天, 新连续天数: " + entity.currentStreak);
-                } else {
-                    android.util.Log.e("RoomHabitRepository", "未找到习惯: " + habitId);
-                    errorLiveData.postValue("未找到习惯: " + habitId);
+                    android.util.Log.d("Repository", "打卡成功: " + entity.name);
                 }
             } catch (Exception e) {
-                android.util.Log.e("RoomHabitRepository", "完成任务失败: " + e.getMessage(), e);
                 errorLiveData.postValue("完成任务失败: " + e.getMessage());
             }
         });
     }
-
 
     @Override
     public LiveData<List<HabitCycle>> getPopularHabitCycles() {

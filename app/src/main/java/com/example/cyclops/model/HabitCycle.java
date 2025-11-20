@@ -13,13 +13,21 @@ public class HabitCycle {
     private long startDate;
     private boolean isPublic;
     private int currentStreak;
+    private int bestStreak;
     private int totalCompletions;
+
+    // [新增] 记录最后一次打卡的时间戳
+    private long lastCompletionDate;
 
     public HabitCycle() {
         this.id = UUID.randomUUID().toString();
-        this.startDate = System.currentTimeMillis(); // 设置开始时间为当前时间
+        this.startDate = System.currentTimeMillis();
         this.currentStreak = 0;
+        this.bestStreak = 0;
         this.totalCompletions = 0;
+        this.userId = "";
+        this.isPublic = false;
+        this.lastCompletionDate = 0; // 初始化
     }
 
     public HabitCycle(String name, String description, int cycleLength, List<DayTask> dayTasks) {
@@ -41,9 +49,7 @@ public class HabitCycle {
     public void setDescription(String description) { this.description = description; }
 
     public int getCycleLength() { return cycleLength; }
-    public void setCycleLength(int cycleLength) {
-        this.cycleLength = cycleLength;
-    }
+    public void setCycleLength(int cycleLength) { this.cycleLength = cycleLength; }
 
     public List<DayTask> getDayTasks() { return dayTasks; }
     public void setDayTasks(List<DayTask> dayTasks) { this.dayTasks = dayTasks; }
@@ -60,8 +66,15 @@ public class HabitCycle {
     public int getCurrentStreak() { return currentStreak; }
     public void setCurrentStreak(int currentStreak) { this.currentStreak = currentStreak; }
 
+    public int getBestStreak() { return bestStreak; }
+    public void setBestStreak(int bestStreak) { this.bestStreak = bestStreak; }
+
     public int getTotalCompletions() { return totalCompletions; }
     public void setTotalCompletions(int totalCompletions) { this.totalCompletions = totalCompletions; }
+
+    // [新增] Getter 和 Setter
+    public long getLastCompletionDate() { return lastCompletionDate; }
+    public void setLastCompletionDate(long lastCompletionDate) { this.lastCompletionDate = lastCompletionDate; }
 
     public void updateDayTask(int dayIndex, String taskName) {
         if (dayTasks != null && dayIndex >= 0 && dayIndex < dayTasks.size()) {

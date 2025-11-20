@@ -3,49 +3,62 @@ package com.example.cyclops;
 import com.example.cyclops.model.HabitCycle;
 import com.example.cyclops.model.DayTask;
 
+import java.util.Calendar;
+
 public class HabitCycleEngine {
 
     /**
-     * 计算当前应该显示的习惯循环中的第几天
+     * 计算当前应该是第几天
      */
     public static int calculateCurrentDay(HabitCycle habitCycle) {
         if (habitCycle == null || habitCycle.getStartDate() == 0) {
             return 1;
         }
+        // 修复后的日期计算逻辑：基于日历天数差异，而非毫秒差
+        Calendar startCal = Calendar.getInstance();
+        startCal.setTimeInMillis(habitCycle.getStartDate());
+        startCal.set(Calendar.HOUR_OF_DAY, 0);
+        startCal.set(Calendar.MINUTE, 0);
+        startCal.set(Calendar.SECOND, 0);
+        startCal.set(Calendar.MILLISECOND, 0);
 
-        long startTime = habitCycle.getStartDate();
-        long currentTime = System.currentTimeMillis();
+        Calendar currentCal = Calendar.getInstance();
+        currentCal.setTimeInMillis(System.currentTimeMillis());
+        currentCal.set(Calendar.HOUR_OF_DAY, 0);
+        currentCal.set(Calendar.MINUTE, 0);
+        currentCal.set(Calendar.SECOND, 0);
+        currentCal.set(Calendar.MILLISECOND, 0);
 
-        // 计算从开始日期到现在经过的天数
-        long diff = currentTime - startTime;
+        long diff = currentCal.getTimeInMillis() - startCal.getTimeInMillis();
         long daysPassed = diff / (24 * 60 * 60 * 1000);
 
-        // 使用模运算确定当前在循环中的位置
-        // 确保天数在 1 到 cycleLength 之间
         int currentDay = (int) (daysPassed % habitCycle.getCycleLength()) + 1;
-
         return Math.max(1, Math.min(habitCycle.getCycleLength(), currentDay));
     }
 
     /**
-     * 获取当前天的任务（只返回未完成的任务）
+     * [新增] 检查该习惯今天是否已经完成（用于控制按钮状态）
      */
-    public static DayTask getCurrentDayTask(HabitCycle habitCycle) {
-        int currentDay = calculateCurrentDay(habitCycle);
-        if (habitCycle.getDayTasks() != null && !habitCycle.getDayTasks().isEmpty()) {
-            // 确保天数在有效范围内（0-based index）
-            int actualDayIndex = Math.min(currentDay - 1, habitCycle.getDayTasks().size() - 1);
-            DayTask task = habitCycle.getDayTasks().get(actualDayIndex);
-
-            // 重要：只返回未完成的任务
-            if (task != null && !task.isCompleted()) {
-                return task;
-            }
+    public static boolean isCompletedToday(HabitCycle habitCycle) {
+        if (habitCycle == null || habitCycle.getLastCompletionDate() == 0) {
+            return false;
         }
-        return null;
+
+        Calendar lastCal = Calendar.getInstance();
+        lastCal.setTimeInMillis(habitCycle.getLastCompletionDate());
+
+        Calendar currentCal = Calendar.getInstance();
+        currentCal.setTimeInMillis(System.currentTimeMillis());
+
+        // 比较 年 和 日 是否相同
+        return lastCal.get(Calendar.YEAR) == currentCal.get(Calendar.YEAR) &&
+                lastCal.get(Calendar.DAY_OF_YEAR) == currentCal.get(Calendar.DAY_OF_YEAR);
     }
 
-    public static DayTask getCurrentDayTaskForDisplay(HabitCycle habitCycle) {
+    /**
+     * 获取当前天的任务对象（用于逻辑处理，如获取ID等）
+     */
+    public static DayTask getCurrentDayTask(HabitCycle habitCycle) {
         int currentDay = calculateCurrentDay(habitCycle);
         if (habitCycle.getDayTasks() != null && !habitCycle.getDayTasks().isEmpty()) {
             int actualDayIndex = Math.min(currentDay - 1, habitCycle.getDayTasks().size() - 1);
@@ -55,18 +68,15 @@ public class HabitCycleEngine {
     }
 
     /**
-     * 检查是否是新的一天（用于重置完成状态）
+     * [恢复缺失的方法] 获取当前应该显示的任务（用于 UI 展示，TodayViewModel 需要此方法）
      */
-    public static boolean isNewDay(HabitCycle habitCycle, long lastCompletionTime) {
-        if (lastCompletionTime == 0) return true;
-
-        java.util.Calendar lastCal = java.util.Calendar.getInstance();
-        lastCal.setTimeInMillis(lastCompletionTime);
-
-        java.util.Calendar currentCal = java.util.Calendar.getInstance();
-
-        return lastCal.get(java.util.Calendar.YEAR) != currentCal.get(java.util.Calendar.YEAR) ||
-                lastCal.get(java.util.Calendar.MONTH) != currentCal.get(java.util.Calendar.MONTH) ||
-                lastCal.get(java.util.Calendar.DAY_OF_MONTH) != currentCal.get(java.util.Calendar.DAY_OF_MONTH);
+    public static DayTask getCurrentDayTaskForDisplay(HabitCycle habitCycle) {
+        int currentDay = calculateCurrentDay(habitCycle);
+        if (habitCycle.getDayTasks() != null && !habitCycle.getDayTasks().isEmpty()) {
+            // 确保索引不越界
+            int actualDayIndex = Math.min(currentDay - 1, habitCycle.getDayTasks().size() - 1);
+            return habitCycle.getDayTasks().get(actualDayIndex);
+        }
+        return null;
     }
 }
