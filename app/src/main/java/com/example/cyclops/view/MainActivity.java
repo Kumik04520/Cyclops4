@@ -58,16 +58,16 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText("今日");
+                    tab.setText(R.string.tab_today); // 修改
                     break;
                 case 1:
-                    tab.setText("习惯");
+                    tab.setText(R.string.tab_habits); // 修改
                     break;
                 case 2:
-                    tab.setText("统计");
+                    tab.setText(R.string.tab_stats); // 修改
                     break;
                 case 3:
-                    tab.setText("发现");
+                    tab.setText(R.string.tab_discover); // 修改
                     break;
             }
         }).attach();

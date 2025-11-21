@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-import androidx.appcompat.app.AlertDialog;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -48,7 +48,6 @@ public class HabitDetailActivity extends AppCompatActivity {
         }
 
         initViews();
-        setupRecyclerView();
         setupViewModel();
         setupClickListeners();
     }
@@ -59,47 +58,28 @@ public class HabitDetailActivity extends AppCompatActivity {
         tvCycleLength = findViewById(R.id.tv_cycle_length);
         tvCurrentStreak = findViewById(R.id.tv_current_streak);
         tvTotalCompletions = findViewById(R.id.tv_total_completions);
-        recyclerViewTasks = findViewById(R.id.recycler_view_tasks); // 现在从布局中获取
+        recyclerViewTasks = findViewById(R.id.recycler_view_tasks);
         btnDelete = findViewById(R.id.btn_delete);
         btnBack = findViewById(R.id.btn_back);
-    }
-
-    private void setupRecyclerView() {
-        currentTasks = new ArrayList<>();
-        taskAdapter = new DayTaskAdapter(currentTasks, new DayTaskAdapter.OnTaskChangeListener() {
-            @Override
-            public void onTaskNameChanged(int position, String newTaskName) { // 修改方法名
-                // 更新任务名称
-                if (position < currentTasks.size()) {
-                    currentTasks.get(position).setTaskName(newTaskName); // 使用 setTaskName
-                    saveTasks();
-                }
-            }
-
-
-        });
 
         recyclerViewTasks.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewTasks.setAdapter(taskAdapter);
     }
 
     private void setupViewModel() {
         habitViewModel = new ViewModelProvider(this).get(HabitViewModel.class);
+
+        // 触发加载数据
+        habitViewModel.selectHabitCycle(habitId);
 
         habitViewModel.getSelectedHabitLiveData().observe(this, habit -> {
             if (habit != null) {
                 updateUI(habit);
             }
         });
-
-        habitViewModel.selectHabitCycle(habitId);
     }
 
     private void setupClickListeners() {
-        btnBack.setOnClickListener(v -> {
-            saveTasks();
-            finish();
-        });
+        btnBack.setOnClickListener(v -> finish());
 
         btnDelete.setOnClickListener(v -> showDeleteConfirmationDialog());
     }
@@ -107,13 +87,27 @@ public class HabitDetailActivity extends AppCompatActivity {
     private void updateUI(HabitCycle habit) {
         tvHabitName.setText(habit.getName());
         tvHabitDescription.setText(habit.getDescription());
-        tvCycleLength.setText("循环长度: " + habit.getCycleLength() + "天");
-        tvCurrentStreak.setText("当前连续: " + habit.getCurrentStreak() + "天");
-        tvTotalCompletions.setText("总完成次数: " + habit.getTotalCompletions());
+        tvCycleLength.setText(String.valueOf(habit.getCycleLength()));
+        tvCurrentStreak.setText(String.valueOf(habit.getCurrentStreak()));
+        tvTotalCompletions.setText(String.valueOf(habit.getTotalCompletions()));
 
-        if (habit.getDayTasks() != null) {
-            currentTasks.clear();
-            currentTasks.addAll(habit.getDayTasks());
+        // 初始化或更新任务列表
+        if (currentTasks == null) {
+            currentTasks = new ArrayList<>();
+            if (habit.getDayTasks() != null) {
+                currentTasks.addAll(habit.getDayTasks());
+            }
+        }
+
+        if (taskAdapter == null) {
+            taskAdapter = new DayTaskAdapter(currentTasks, (position, newTaskName) -> {
+                if (position >= 0 && position < currentTasks.size()) {
+                    currentTasks.get(position).setTaskName(newTaskName);
+                }
+            });
+            recyclerViewTasks.setAdapter(taskAdapter);
+        } else {
+            // 如果需要完全刷新列表
             taskAdapter.updateData(currentTasks);
         }
     }
@@ -130,7 +124,9 @@ public class HabitDetailActivity extends AppCompatActivity {
                 }
                 currentHabit.setDayTasks(currentTasks);
                 habitViewModel.updateHabitCycle(currentHabit);
-                Toast.makeText(this, "任务已保存", Toast.LENGTH_SHORT).show();
+
+                // [修改] 使用资源字符串
+                Toast.makeText(this, R.string.toast_tasks_saved, Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -140,20 +136,23 @@ public class HabitDetailActivity extends AppCompatActivity {
         if (habit == null) return;
 
         new AlertDialog.Builder(this)
-                .setTitle("删除习惯")
-                .setMessage("确定要删除习惯 \"" + habit.getName() + "\" 吗？此操作不可恢复。")
-                .setPositiveButton("删除", (dialog, which) -> {
+                // [修改] 使用资源字符串
+                .setTitle(R.string.title_delete_habit)
+                .setMessage(getString(R.string.msg_delete_habit, habit.getName()))
+                .setPositiveButton(R.string.btn_delete, (dialog, which) -> {
                     habitViewModel.deleteHabitCycle(habitId);
-                    Toast.makeText(this, "习惯已删除", Toast.LENGTH_SHORT).show();
+                    // [修改] 使用资源字符串
+                    Toast.makeText(this, R.string.toast_habit_deleted, Toast.LENGTH_SHORT).show();
                     finish();
                 })
-                .setNegativeButton("取消", null)
+                .setNegativeButton(R.string.btn_cancel, null)
                 .show();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        // 页面暂停/退出时自动保存任务修改
         saveTasks();
     }
 }

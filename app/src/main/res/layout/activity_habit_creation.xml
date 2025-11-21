@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- 标题栏 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +23,7 @@
                 android:id="@+id/btn_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="返回"
+                android:text="@string/btn_back"
                 android:background="@android:color/transparent"
                 android:textColor="?attr/colorPrimary" />
 
@@ -32,7 +31,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="创建新习惯"
+                android:text="@string/title_create_new_habit"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:gravity="center" />
@@ -43,7 +42,6 @@
 
         </LinearLayout>
 
-        <!-- 习惯基本信息 -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,85 +58,62 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="基本信息"
+                    android:text="@string/title_habit_info"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
 
-                <!-- 习惯名称 -->
-                <LinearLayout
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:layout_marginBottom="12dp">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="习惯名称"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_habit_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="例如：健身计划、语言学习"
-                        android:maxLines="1" />
+                        android:hint="@string/hint_habit_name"
+                        android:inputType="textCapSentences" />
+                </com.google.android.material.textfield.TextInputLayout>
 
-                </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_habit_desc"
+                    android:textSize="12sp"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginBottom="4dp" />
 
-                <!-- 习惯描述 -->
-                <LinearLayout
+                <EditText
+                    android:id="@+id/et_habit_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginBottom="12dp">
+                    android:hint="@string/hint_input_habit_desc"
+                    android:background="@android:color/transparent"
+                    android:padding="8dp"
+                    android:minHeight="80dp"
+                    android:gravity="top|start"
+                    android:layout_marginBottom="16dp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="习惯描述（可选）"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-
-                    <EditText
-                        android:id="@+id/et_habit_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="描述这个习惯循环的目的和内容"
-                        android:maxLines="3" />
-
-                </LinearLayout>
-
-                <!-- 循环长度 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:text="@string/label_cycle_length"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="循环长度"
-                        android:textSize="14sp"
-                        android:textStyle="bold"
-                        android:layout_marginBottom="4dp" />
-
-                    <Spinner
-                        android:id="@+id/spinner_cycle_length"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
+                <Spinner
+                    android:id="@+id/spinner_cycle_length"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="@android:drawable/btn_dropdown"
+                    android:spinnerMode="dropdown" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <!-- 每日任务设置 -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -155,7 +130,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="每日任务设置"
+                    android:text="@string/title_daily_tasks_settings"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
@@ -170,12 +145,11 @@
 
         </androidx.cardview.widget.CardView>
 
-        <!-- 创建按钮 -->
         <Button
             android:id="@+id/btn_create_habit"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="创建习惯"
+            android:text="@string/btn_create_habit"
             android:textSize="16sp"
             android:textStyle="bold"
             android:backgroundTint="?attr/colorPrimary"

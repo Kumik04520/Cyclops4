@@ -14,7 +14,6 @@
         android:padding="16dp"
         android:background="?android:attr/selectableItemBackground">
 
-        <!-- 天数标识 -->
         <TextView
             android:id="@+id/tv_day_number"
             android:layout_width="40dp"
@@ -27,13 +26,12 @@
             android:background="@drawable/circle_background"
             android:layout_marginEnd="12dp" />
 
-        <!-- 任务描述输入框 -->
         <EditText
             android:id="@+id/et_task_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="任务描述"
+            android:text="@string/label_task_description"
             android:textSize="16sp"
             android:textColor="#333333"
             android:background="@android:color/transparent"
@@ -41,8 +39,6 @@
             android:imeOptions="actionDone"
             android:singleLine="true"
             android:layout_gravity="center_vertical" />
-
-
 
     </LinearLayout>
 

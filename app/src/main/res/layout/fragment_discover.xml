@@ -15,12 +15,11 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="发现模板"
+            android:text="@string/title_discover_templates"
             android:textSize="24sp"
             android:textStyle="bold"
             android:layout_marginBottom="24dp" />
 
-        <!-- 搜索框 -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,27 +34,78 @@
                 android:gravity="center_vertical"
                 android:padding="12dp">
 
-
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="搜索习惯模板..."
-                    android:textSize="14sp"
-                    android:textColor="?android:attr/textColorSecondary" />
+                    android:text="@string/hint_search_templates"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:layout_marginStart="8dp" />
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@android:drawable/ic_menu_search"
+                    app:tint="?android:attr/textColorSecondary" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <!-- 热门模板 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_popular_templates"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_popular"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/tv_empty_popular"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/text_no_categories"
+            android:gravity="center"
+            android:visibility="gone" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/title_recent_templates"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="12dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_recent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:orientation="horizontal" />
+
+        <TextView
+            android:id="@+id/tv_empty_recent"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:text="@string/text_no_categories"
+            android:gravity="center"
+            android:visibility="gone" />
+
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
+            app:cardElevation="2dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,137 +118,20 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
+                    android:layout_marginBottom="12dp">
 
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="🔥 热门模板"
+                        android:text="@string/label_fitness_category"
                         android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="查看全部"
-                        android:textSize="12sp"
-                        android:textColor="?attr/colorPrimary"
-                        android:clickable="true"
-                        android:focusable="true" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_popular"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-                <TextView
-                    android:id="@+id/tv_empty_popular"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:text="暂无热门模板"
-                    android:textSize="14sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:gravity="center"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- 最新模板 -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🆕 最新模板"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="查看全部"
-                        android:textSize="12sp"
-                        android:textColor="?attr/colorPrimary"
-                        android:clickable="true"
-                        android:focusable="true" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_recent"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp" />
-
-                <TextView
-                    android:id="@+id/tv_empty_recent"
-                    android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:text="暂无最新模板"
-                    android:textSize="14sp"
-                    android:textColor="?android:attr/textColorSecondary"
-                    android:gravity="center"
-                    android:visibility="gone" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- 分类模板 -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="4dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="🏷️ 健身分类"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="更多分类"
+                        android:text="@string/btn_more_categories"
                         android:textSize="12sp"
                         android:textColor="?attr/colorPrimary"
                         android:clickable="true"
@@ -215,7 +148,7 @@
                     android:id="@+id/tv_empty_categories"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
-                    android:text="暂无分类模板"
+                    android:text="@string/text_no_categories"
                     android:textSize="14sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:gravity="center"

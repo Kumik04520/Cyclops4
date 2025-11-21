@@ -9,17 +9,16 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="我的习惯"
+        android:text="@string/title_my_habits"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
 
-    <!-- 空状态提示 -->
     <TextView
         android:id="@+id/tv_empty_state"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="还没有创建任何习惯\n点击右下角按钮开始创建第一个习惯吧！"
+        android:text="@string/empty_state_habits"
         android:textSize="16sp"
         android:textColor="?android:attr/textColorSecondary"
         android:gravity="center"

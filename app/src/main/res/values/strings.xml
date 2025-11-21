@@ -1,3 +1,84 @@
 <resources>
     <string name="app_name">Cyclops</string>
+    <string name="tab_today">Today</string>
+    <string name="tab_habits">Habits</string>
+    <string name="tab_stats">Stats</string>
+    <string name="tab_discover">Discover</string>
+    <string name="empty_state_habits">No habits yet. Click + to create one!</string>
+    <string name="day_format">Day %1$d</string>
+    <string name="progress_format">%1$d%%</string>
+    <string name="btn_check_in">Check In</string>
+    <string name="btn_completed_today">Done Today</string>
+    <string name="checking_in_toast">Checking in: %1$s</string>
+    <string name="hint_habit_name">Habit Name</string>
+    <string name="hint_habit_desc">Description</string>
+    <string name="toast_enter_name">Please enter a habit name</string>
+    <string name="default_task_name">Day %1$d Task</string>
+    <string name="hint_day_task">Enter task for Day %1$d</string>
+    <string name="btn_create_habit">Create Cycle</string>
+
+    <string name="toast_habit_created">Habit cycle created!</string>
+
+    <string name="stat_total_habits">Total Habits</string>
+    <string name="stat_total_completions">Total Completions</string>
+    <string name="stat_best_streak">Best Streak</string>
+    <string name="stat_success_rate">Success Rate</string>
+    <string name="template_cycle_days">%1$d Day Cycle</string>
+    <string name="template_downloads">%1$s Uses</string>
+    <string name="btn_import">Import</string>
+    <string name="toast_import_success">Template imported successfully!</string>
+    <string name="error_add_habit">Failed to add habit: %1$s</string>
+    <string name="error_update_habit">Failed to update habit: %1$s</string>
+    <string name="error_delete_habit">Failed to delete habit: %1$s</string>
+    <string name="error_complete_task">Failed to complete task: %1$s</string>
+    <string name="title_delete_habit">Delete Habit</string>
+    <string name="msg_delete_habit">Are you sure you want to delete "%1$s"? This cannot be undone.</string>
+    <string name="btn_delete">Delete</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="toast_tasks_saved">Tasks saved</string>
+    <string name="toast_habit_deleted">Habit deleted</string>
+
+    <string name="title_create_new_habit">Create New Habit</string>
+    <string name="title_habit_info">Habit Info</string>
+    <string name="hint_input_habit_name">Enter habit name...</string>
+    <string name="label_habit_desc">Description (Optional)</string>
+    <string name="hint_input_habit_desc">Enter description...</string>
+    <string name="label_cycle_length">Cycle Length</string>
+    <string name="title_daily_tasks_settings">Daily Tasks Settings</string>
+
+    <string name="title_discover_templates">Discover Templates</string>
+    <string name="hint_search_templates">Search templates...</string>
+    <string name="title_popular_templates">Popular</string>
+    <string name="title_recent_templates">Recent</string>
+    <string name="label_fitness_category">🏷️ Fitness</string>
+    <string name="btn_more_categories">More Categories</string>
+    <string name="text_no_categories">No templates available</string>
+
+    <string name="title_my_habits">My Habits</string>
+    <string name="title_habit_detail">Habit Detail</string>
+    <string name="btn_back">Back</string>
+
+    <string name="label_current_streak">Current Streak</string>
+    <string name="label_streak_prefix">Streak: </string>
+    <string name="label_completed_prefix">Done: </string>
+    <string name="unit_days">Days</string>
+    <string name="unit_times">Times</string>
+
+    <string name="title_daily_tasks">Daily Tasks</string>
+    <string name="title_statistics">Statistics</string>
+    <string name="title_stats_overview">Overview</string>
+    <string name="text_more_stats_coming">More stats coming soon...</string>
+
+    <string name="title_today_tasks">Today\'s Tasks</string>
+    <string name="title_today_progress">Today\'s Progress</string>
+    <string name="text_tasks_completed_suffix">tasks completed</string>
+    <string name="title_pending_tasks">Pending Tasks</string>
+
+    <string name="label_task_name">Task Name</string>
+    <string name="hint_input_task_detail">Enter specific task for this day...</string>
+    <string name="label_task_description">Task Description</string>
+
+    <string name="btn_delete_habit">Delete Habit</string>
+    <string name="btn_complete">Complete</string>
+    <string name="btn_import_one_click">Import</string>
 </resources>

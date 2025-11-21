@@ -17,7 +17,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- 习惯名称和描述 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,7 +27,7 @@
                 android:id="@+id/tv_habit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="习惯名称"
+                android:text="Habit Name"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="4dp" />
@@ -37,50 +36,50 @@
                 android:id="@+id/tv_habit_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="习惯描述"
+                android:text="Description..."
                 android:textSize="14sp"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:textColor="?android:attr/textColorSecondary"
+                android:maxLines="2"
+                android:ellipsize="end" />
 
         </LinearLayout>
 
-        <!-- 当前天数 -->
-        <TextView
-            android:id="@+id/tv_current_day"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="第 1 天"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            android:textColor="?attr/colorPrimary"
-            android:layout_marginBottom="8dp" />
-
-        <!-- 进度条 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_current_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Day 1"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp" />
 
             <ProgressBar
                 android:id="@+id/progress_bar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="0dp"
-                android:layout_height="8dp"
+                android:layout_height="6dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="8dp" />
+                android:progressDrawable="@drawable/progress_bar_drawable"
+                android:max="100"
+                android:progress="33" />
 
             <TextView
                 android:id="@+id/tv_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="50%"
+                android:text="33%"
                 android:textSize="12sp"
-                android:textColor="?android:attr/textColorSecondary" />
+                android:layout_marginStart="8dp" />
 
         </LinearLayout>
 
-        <!-- 统计信息和完成按钮 -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -96,7 +95,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="连续: "
+                    android:text="@string/label_streak_prefix"
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary" />
 
@@ -111,7 +110,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="天"
+                    android:text="@string/unit_days"
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary"
                     android:layout_marginEnd="12dp" />
@@ -119,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="完成: "
+                    android:text="@string/label_completed_prefix"
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary" />
 
@@ -134,7 +133,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="次"
+                    android:text="@string/unit_times"
                     android:textSize="12sp"
                     android:textColor="?android:attr/textColorSecondary" />
 
@@ -143,8 +142,9 @@
             <Button
                 android:id="@+id/btn_complete"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
-                android:text="完成"
+                android:layout_height="wrap_content"
+                android:minHeight="36dp"
+                android:text="@string/btn_complete"
                 android:textSize="14sp"
                 android:backgroundTint="?attr/colorPrimary"
                 android:textColor="@android:color/white"

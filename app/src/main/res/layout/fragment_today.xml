@@ -9,12 +9,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="今日任务"
+        android:text="@string/title_today_tasks"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="16dp" />
 
-    <!-- 进度卡片 -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -30,7 +29,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="今日进度"
+                android:text="@string/title_today_progress"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
@@ -40,13 +39,16 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="8dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress_bar_drawable"
                 android:layout_marginBottom="8dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="end|center_vertical">
 
                 <TextView
                     android:id="@+id/tv_completed_count"
@@ -76,7 +78,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="个任务已完成"
+                    android:text="@string/text_tasks_completed_suffix"
                     android:textSize="14sp"
                     android:layout_marginStart="8dp" />
 
@@ -89,7 +91,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="待完成任务"
+        android:text="@string/title_pending_tasks"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_marginBottom="8dp" />

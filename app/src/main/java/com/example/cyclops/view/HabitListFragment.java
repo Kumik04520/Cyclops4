@@ -16,10 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.cyclops.R;
+import com.example.cyclops.HabitCycleEngine;
 import com.example.cyclops.adapter.HabitCycleAdapter;
 import com.example.cyclops.model.HabitCycle;
 import com.example.cyclops.viewmodel.HabitViewModel;
-import com.example.cyclops.HabitCycleEngine; // 导入引擎
 
 import java.util.ArrayList;
 
@@ -52,7 +52,6 @@ public class HabitListFragment extends Fragment {
     }
 
     private void setupRecyclerView() {
-        // 初始化 Adapter 并正确实现两个点击回调
         adapter = new HabitCycleAdapter(new ArrayList<>(), new HabitCycleAdapter.OnHabitClickListener() {
             @Override
             public void onHabitClick(HabitCycle habitCycle) {
@@ -61,15 +60,12 @@ public class HabitListFragment extends Fragment {
 
             @Override
             public void onCompleteClick(HabitCycle habitCycle) {
-                // [修复] 按钮点击逻辑
-                // 1. 计算当前是第几天
                 int currentDay = HabitCycleEngine.calculateCurrentDay(habitCycle);
-
-                // 2. 调用 ViewModel 完成打卡
                 habitViewModel.completeDay(habitCycle.getId(), currentDay);
 
-                // 3. 给用户反馈
-                Toast.makeText(getContext(), "正在打卡: " + habitCycle.getName(), Toast.LENGTH_SHORT).show();
+                // [修改] 使用 getString 获取格式化的资源字符串
+                String msg = getString(R.string.checking_in_toast, habitCycle.getName());
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
             }
         });
 

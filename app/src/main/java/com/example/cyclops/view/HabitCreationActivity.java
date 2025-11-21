@@ -3,6 +3,7 @@ package com.example.cyclops.view;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -53,68 +54,53 @@ public class HabitCreationActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        // 创建适配器
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
-                this,
-                R.array.cycle_length_options,
-                android.R.layout.simple_spinner_item
-        );
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        Integer[] items = new Integer[]{3, 4, 5, 6, 7};
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
         spinnerCycleLength.setAdapter(adapter);
 
-        spinnerCycleLength.setSelection(0); // 默认选择3天
-
-        // 监听选择变化
-        spinnerCycleLength.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+        spinnerCycleLength.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
-                currentCycleLength = position + 3; // 3, 4, 5, 6, 7天
-                updateDayTaskInputs();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentCycleLength = (Integer) parent.getItemAtPosition(position);
+                updateDayTasksLayout();
             }
 
             @Override
-            public void onNothingSelected(android.widget.AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
+    }
 
-        // 初始创建输入框
-        updateDayTaskInputs();
+    private void updateDayTasksLayout() {
+        layoutDayTasks.removeAllViews();
+        for (int i = 1; i <= currentCycleLength; i++) {
+            View dayTaskView = getLayoutInflater().inflate(R.layout.item_day_task_creation, layoutDayTasks, false);
+
+            TextView tvDayLabel = dayTaskView.findViewById(R.id.tv_day_label);
+            EditText etTaskName = dayTaskView.findViewById(R.id.et_task_name);
+
+            // [修改] 使用资源字符串
+            tvDayLabel.setText(getString(R.string.day_format, i));
+            etTaskName.setHint(getString(R.string.hint_day_task, i));
+            etTaskName.setTag(i);
+
+            layoutDayTasks.addView(dayTaskView);
+        }
     }
 
     private void setupClickListeners() {
         btnCreateHabit.setOnClickListener(v -> createHabitCycle());
-
-        // 返回按钮
-        findViewById(R.id.btn_back).setOnClickListener(v -> finish());
-    }
-
-    private void updateDayTaskInputs() {
-        layoutDayTasks.removeAllViews();
-
-        for (int i = 1; i <= currentCycleLength; i++) {
-            View dayTaskView = getLayoutInflater().inflate(R.layout.item_day_task_input, layoutDayTasks, false);
-
-            TextView tvDayNumber = dayTaskView.findViewById(R.id.tv_day_number);
-            EditText etTaskName = dayTaskView.findViewById(R.id.et_task_name);
-
-            tvDayNumber.setText("第 " + i + " 天");
-            etTaskName.setHint("输入第 " + i + " 天的任务");
-            etTaskName.setTag(i); // 用tag标记天数
-
-            layoutDayTasks.addView(dayTaskView);
-        }
     }
 
     private void createHabitCycle() {
         String habitName = etHabitName.getText().toString().trim();
         String habitDescription = etHabitDescription.getText().toString().trim();
 
-        // 验证输入
         if (TextUtils.isEmpty(habitName)) {
-            Toast.makeText(this, "请输入习惯名称", Toast.LENGTH_SHORT).show();
+            // [修改] 使用资源ID
+            Toast.makeText(this, R.string.toast_enter_name, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // 收集每日任务
         List<DayTask> dayTasks = new ArrayList<>();
         for (int i = 0; i < layoutDayTasks.getChildCount(); i++) {
             View dayTaskView = layoutDayTasks.getChildAt(i);
@@ -122,23 +108,24 @@ public class HabitCreationActivity extends AppCompatActivity {
             String taskName = etTaskName.getText().toString().trim();
 
             if (TextUtils.isEmpty(taskName)) {
-                taskName = "第 " + (i + 1) + " 天"; // 默认任务名
+                // [修改] 默认任务名国际化
+                taskName = getString(R.string.default_task_name, (i + 1));
             }
 
             dayTasks.add(new DayTask(i + 1, taskName));
         }
 
-        // 创建习惯循环
         HabitCycle habitCycle = new HabitCycle();
         habitCycle.setName(habitName);
         habitCycle.setDescription(habitDescription);
         habitCycle.setCycleLength(currentCycleLength);
         habitCycle.setDayTasks(dayTasks);
+        habitCycle.setUserId(""); // 确保非空
 
-        // 保存到ViewModel
         habitViewModel.addHabitCycle(habitCycle);
 
-        Toast.makeText(this, "习惯创建成功！", Toast.LENGTH_SHORT).show();
+        // [修改] 成功提示
+        Toast.makeText(this, R.string.toast_habit_created, Toast.LENGTH_SHORT).show();
         finish();
     }
 }

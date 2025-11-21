@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cyclops</string>
+
+    <string name="tab_today">今日</string>
+    <string name="tab_habits">习惯</string>
+    <string name="tab_stats">统计</string>
+    <string name="tab_discover">发现</string>
+
+    <string name="empty_state_habits">还没有习惯，点击 + 创建一个！</string>
+    <string name="day_format">第 %1$d 天</string>
+    <string name="progress_format">%1$d%%</string>
+    <string name="btn_check_in">打卡</string>
+    <string name="btn_completed_today">今日已完成</string>
+    <string name="checking_in_toast">正在打卡: %1$s</string>
+
+    <string name="hint_habit_name">习惯名称</string>
+    <string name="hint_habit_desc">描述</string>
+    <string name="toast_enter_name">请输入习惯名称</string>
+    <string name="default_task_name">第 %1$d 天</string>
+    <string name="hint_day_task">输入第 %1$d 天的任务</string>
+    <string name="btn_create_habit">创建循环</string>
+    <string name="toast_habit_created">习惯循环已创建！</string>
+
+    <string name="stat_total_habits">总习惯数</string>
+    <string name="stat_total_completions">总完成次数</string>
+    <string name="stat_best_streak">最佳连续</string>
+    <string name="stat_success_rate">成功率</string>
+
+    <string name="template_cycle_days">%1$d 天循环</string>
+    <string name="template_downloads">%1$s 次使用</string>
+    <string name="btn_import">导入</string>
+    <string name="toast_import_success">模板导入成功！</string>
+
+    <string name="error_add_habit">添加习惯失败: %1$s</string>
+    <string name="error_update_habit">更新习惯失败: %1$s</string>
+    <string name="error_delete_habit">删除习惯失败: %1$s</string>
+    <string name="error_complete_task">完成任务失败: %1$s</string>
+
+    <string name="title_delete_habit">删除习惯</string>
+    <string name="msg_delete_habit">确定要删除习惯 "%1$s" 吗？此操作不可恢复。</string>
+    <string name="btn_delete">删除</string>
+    <string name="btn_cancel">取消</string>
+    <string name="toast_tasks_saved">任务已保存</string>
+    <string name="toast_habit_deleted">习惯已删除</string>
+
+    <string name="title_create_new_habit">创建新习惯</string>
+    <string name="title_habit_info">习惯信息</string>
+    <string name="hint_input_habit_name">输入习惯名称...</string>
+    <string name="label_habit_desc">描述 (可选)</string>
+    <string name="hint_input_habit_desc">输入描述...</string>
+    <string name="label_cycle_length">循环长度</string>
+    <string name="title_daily_tasks_settings">每日任务设置</string>
+
+    <string name="title_discover_templates">发现模板</string>
+    <string name="hint_search_templates">搜索模板...</string>
+    <string name="title_popular_templates">热门模板</string>
+    <string name="title_recent_templates">最新模板</string>
+    <string name="label_fitness_category">🏷️ 健身分类</string>
+    <string name="btn_more_categories">更多分类</string>
+    <string name="text_no_categories">暂无分类模板</string>
+
+    <string name="title_my_habits">我的习惯</string>
+    <string name="title_habit_detail">习惯详情</string>
+    <string name="btn_back">返回</string>
+
+    <string name="label_current_streak">当前连续</string>
+    <string name="label_streak_prefix">连续: </string>
+    <string name="label_completed_prefix">完成: </string>
+    <string name="unit_days">天</string>
+    <string name="unit_times">次</string>
+
+    <string name="title_daily_tasks">每日任务</string>
+    <string name="title_statistics">数据统计</string>
+    <string name="title_stats_overview">统计概览</string>
+    <string name="text_more_stats_coming">更多统计功能即将推出...</string>
+
+    <string name="title_today_tasks">今日任务</string>
+    <string name="title_today_progress">今日进度</string>
+    <string name="text_tasks_completed_suffix">个任务已完成</string>
+    <string name="title_pending_tasks">待完成任务</string>
+
+    <string name="label_task_name">任务名称</string>
+    <string name="hint_input_task_detail">输入这天的具体任务...</string>
+    <string name="label_task_description">任务描述</string>
+
+    <string name="btn_delete_habit">删除习惯</string>
+    <string name="btn_complete">完成</string>
+    <string name="btn_import_one_click">一键导入</string>
+</resources>

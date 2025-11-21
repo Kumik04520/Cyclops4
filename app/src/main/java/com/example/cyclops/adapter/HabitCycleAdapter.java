@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.cyclops.R;
 import com.example.cyclops.model.HabitCycle;
 import com.example.cyclops.HabitCycleEngine;
-// 确保引用独立的 ViewHolder（如果之前分离了文件）
-// 或者使用内部类，这里假设使用内部类或已合并
 
 import java.util.List;
 
@@ -57,7 +55,6 @@ public class HabitCycleAdapter extends RecyclerView.Adapter<HabitCycleAdapter.Ha
         return habitCycles != null ? habitCycles.size() : 0;
     }
 
-    // 内部 ViewHolder 类
     static class HabitViewHolder extends RecyclerView.ViewHolder {
         private TextView habitName;
         private TextView habitDescription;
@@ -81,31 +78,34 @@ public class HabitCycleAdapter extends RecyclerView.Adapter<HabitCycleAdapter.Ha
             habitDescription.setText(habitCycle.getDescription());
 
             int currentDayNumber = HabitCycleEngine.calculateCurrentDay(habitCycle);
-            currentDay.setText("第 " + currentDayNumber + " 天");
+
+            // [修改] 使用 Context 获取资源字符串
+            currentDay.setText(itemView.getContext().getString(R.string.day_format, currentDayNumber));
 
             int progress = (currentDayNumber * 100) / Math.max(1, habitCycle.getCycleLength());
             progressBar.setProgress(progress);
-            progressText.setText(progress + "%");
 
-            // [核心修改] 检查今天是否已完成，控制按钮状态
+            // [修改] 使用 Context 获取资源字符串
+            progressText.setText(itemView.getContext().getString(R.string.progress_format, progress));
+
             boolean isCompleted = HabitCycleEngine.isCompletedToday(habitCycle);
 
             if (isCompleted) {
-                completeButton.setText("今日已完成");
-                completeButton.setEnabled(false); // 禁止点击
-                completeButton.setAlpha(0.5f);    // 变灰
+                // [修改] 使用资源ID
+                completeButton.setText(R.string.btn_completed_today);
+                completeButton.setEnabled(false);
+                completeButton.setAlpha(0.5f);
             } else {
-                completeButton.setText("打卡");
-                completeButton.setEnabled(true);  // 允许点击
-                completeButton.setAlpha(1.0f);    // 恢复正常
+                // [修改] 使用资源ID
+                completeButton.setText(R.string.btn_check_in);
+                completeButton.setEnabled(true);
+                completeButton.setAlpha(1.0f);
             }
 
-            // 点击整个条目进入详情
             itemView.setOnClickListener(v -> {
                 if (listener != null) listener.onHabitClick(habitCycle);
             });
 
-            // 点击完成按钮（如果 enabled=true）
             completeButton.setOnClickListener(v -> {
                 if (listener != null) listener.onCompleteClick(habitCycle);
             });

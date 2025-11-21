@@ -78,21 +78,22 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.Templa
             templateName.setText(template.getName());
             templateDescription.setText(template.getDescription());
             templateCategory.setText(template.getCategory());
-            templateCycleLength.setText(template.getCycleLength() + "天循环");
-            downloadCount.setText(template.getFormattedDownloadCount() + "次使用");
-            ratingBar.setRating(template.getRating());
 
-            // 设置点击监听器
+            // [修改] 使用资源字符串格式化
+            templateCycleLength.setText(itemView.getContext().getString(R.string.template_cycle_days, template.getCycleLength()));
+
+            // [修改] 使用资源字符串格式化
+            downloadCount.setText(itemView.getContext().getString(R.string.template_downloads, template.getFormattedDownloadCount()));
+
+            ratingBar.setRating(template.getRating());
+            importButton.setText(R.string.btn_import); // 按钮文字
+
             itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onTemplateClick(template);
-                }
+                if (listener != null) listener.onTemplateClick(template);
             });
 
             importButton.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onImportClick(template);
-                }
+                if (listener != null) listener.onImportClick(template);
             });
         }
     }
