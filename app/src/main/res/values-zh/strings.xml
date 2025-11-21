@@ -53,7 +53,6 @@
     <string name="title_daily_tasks_settings">每日任务设置</string>
 
     <string name="title_discover_templates">发现模板</string>
-    <string name="hint_search_templates">搜索模板...</string>
     <string name="title_popular_templates">热门模板</string>
     <string name="title_recent_templates">最新模板</string>
     <string name="label_fitness_category">🏷️ 健身分类</string>
@@ -87,4 +86,66 @@
     <string name="btn_delete_habit">删除习惯</string>
     <string name="btn_complete">完成</string>
     <string name="btn_import_one_click">一键导入</string>
+
+    <string name="title_all_templates">探索全部</string>
+    <string name="hint_search_templates">搜索习惯模板...</string>
+
+    <string name="title_template_preview">模板预览</string>
+    <string name="label_preview_tasks">包含任务：</string>
+    <string name="btn_use_template">使用此模板</string>
+    <string name="btn_close">关闭</string>
+
+    <string name="tmpl_fitness_title">4天健身循环</string>
+    <string name="tmpl_fitness_desc">建立肌肉和耐力的平衡计划。</string>
+    <string name="tmpl_fitness_cat">健身</string>
+    <string name="task_fitness_d1">第1天：上肢力量训练</string>
+    <string name="task_fitness_d2">第2天：有氧与核心</string>
+    <string name="task_fitness_d3">第3天：下肢力量训练</string>
+    <string name="task_fitness_d4">第4天：动态恢复 / 瑜伽</string>
+
+    <string name="tmpl_sleep_title">优质睡眠习惯</string>
+    <string name="tmpl_sleep_desc">通过每晚的循环改善睡眠质量。</string>
+    <string name="tmpl_sleep_cat">健康</string>
+    <string name="task_sleep_d1">晚上10点后不看屏幕</string>
+    <string name="task_sleep_d2">阅读30分钟书籍</string>
+    <string name="task_sleep_d3">冥想10分钟</string>
+
+    <string name="tmpl_coding_title">每日代码特训</string>
+    <string name="tmpl_coding_desc">保持你的编程技能敏锐。</string>
+    <string name="tmpl_coding_cat">学习</string>
+    <string name="task_coding_d1">解决1道 LeetCode 算法题</string>
+    <string name="task_coding_d2">推进个人项目开发</string>
+    <string name="task_coding_d3">阅读一篇技术文章</string>
+
+    <string name="tmpl_water_title">喝水挑战</string>
+    <string name="tmpl_water_desc">保持水分充足！</string>
+    <string name="tmpl_water_cat">健康</string>
+    <string name="task_water_d1">喝 2L 水</string>
+    <string name="task_water_d2">喝 2.5L 水</string>
+
+    <string name="tmpl_morning_title">神奇早晨</string>
+    <string name="tmpl_morning_desc">以充沛的精力和专注力开启新的一天。</string>
+    <string name="tmpl_morning_cat">健康</string>
+    <string name="task_morning_d1">喝一杯温水</string>
+    <string name="task_morning_d2">5分钟拉伸</string>
+    <string name="task_morning_d3">写下今日3个目标</string>
+
+    <string name="tmpl_focus_title">深度工作协议</string>
+    <string name="tmpl_focus_desc">基于 Cal Newport 的深度工作哲学。</string>
+    <string name="tmpl_focus_cat">效率</string>
+    <string name="task_focus_d1">规划最重要的3件事</string>
+    <string name="task_focus_d2">4组25分钟深度工作 (番茄钟)</string>
+    <string name="task_focus_d3">晚间复盘与日记</string>
+
+    <string name="tmpl_detox_title">数字排毒</string>
+    <string name="tmpl_detox_desc">夺回你的注意力。</string>
+    <string name="tmpl_detox_cat">生活</string>
+    <string name="task_detox_d1">禁止使用社交媒体</string>
+    <string name="task_detox_d2">手机放另一个房间 (1小时)</string>
+
+    <string name="tmpl_read_title">每日阅读</string>
+    <string name="tmpl_read_desc">建立终身阅读习惯。</string>
+    <string name="tmpl_read_cat">学习</string>
+    <string name="task_read_d1">阅读10页</string>
+    <string name="task_read_d2">总结本章内容</string>
 </resources>

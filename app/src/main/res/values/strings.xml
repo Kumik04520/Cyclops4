@@ -47,7 +47,6 @@
     <string name="title_daily_tasks_settings">Daily Tasks Settings</string>
 
     <string name="title_discover_templates">Discover Templates</string>
-    <string name="hint_search_templates">Search templates...</string>
     <string name="title_popular_templates">Popular</string>
     <string name="title_recent_templates">Recent</string>
     <string name="label_fitness_category">🏷️ Fitness</string>
@@ -81,4 +80,66 @@
     <string name="btn_delete_habit">Delete Habit</string>
     <string name="btn_complete">Complete</string>
     <string name="btn_import_one_click">Import</string>
+
+    <string name="title_all_templates">Explore All</string>
+    <string name="hint_search_templates">Search for habits...</string>
+
+    <string name="title_template_preview">Template Preview</string>
+    <string name="label_preview_tasks">Included Tasks:</string>
+    <string name="btn_use_template">Use Template</string>
+    <string name="btn_close">Close</string>
+
+    <string name="tmpl_fitness_title">4-Day Fitness Split</string>
+    <string name="tmpl_fitness_desc">A balanced routine for building muscle and endurance.</string>
+    <string name="tmpl_fitness_cat">Fitness</string>
+    <string name="task_fitness_d1">Day 1: Upper Body Strength</string>
+    <string name="task_fitness_d2">Day 2: Cardio &amp; Core</string>
+    <string name="task_fitness_d3">Day 3: Lower Body &amp; Legs</string>
+    <string name="task_fitness_d4">Day 4: Active Recovery / Yoga</string>
+
+    <string name="tmpl_sleep_title">Better Sleep Routine</string>
+    <string name="tmpl_sleep_desc">Improve your sleep quality with this nightly cycle.</string>
+    <string name="tmpl_sleep_cat">Health</string>
+    <string name="task_sleep_d1">No screens after 10 PM</string>
+    <string name="task_sleep_d2">Read a book for 30 mins</string>
+    <string name="task_sleep_d3">Meditate for 10 mins</string>
+
+    <string name="tmpl_coding_title">Daily Coding Grind</string>
+    <string name="tmpl_coding_desc">Keep your coding skills sharp.</string>
+    <string name="tmpl_coding_cat">Learning</string>
+    <string name="task_coding_d1">Solve 1 LeetCode Problem</string>
+    <string name="task_coding_d2">Work on Personal Project</string>
+    <string name="task_coding_d3">Read Tech Article</string>
+
+    <string name="tmpl_water_title">Hydration Challenge</string>
+    <string name="tmpl_water_desc">Stay hydrated!</string>
+    <string name="tmpl_water_cat">Health</string>
+    <string name="task_water_d1">Drink 2L Water</string>
+    <string name="task_water_d2">Drink 2.5L Water</string>
+
+    <string name="tmpl_morning_title">Miracle Morning</string>
+    <string name="tmpl_morning_desc">Start your day with energy and focus.</string>
+    <string name="tmpl_morning_cat">Wellness</string>
+    <string name="task_morning_d1">Drink glass of water</string>
+    <string name="task_morning_d2">5 min Stretching</string>
+    <string name="task_morning_d3">Write 3 goals for today</string>
+
+    <string name="tmpl_focus_title">Deep Work Protocol</string>
+    <string name="tmpl_focus_desc">Based on Cal Newport\'s Deep Work philosophy.</string>
+    <string name="tmpl_focus_cat">Productivity</string>
+    <string name="task_focus_d1">Plan Top 3 Tasks</string>
+    <string name="task_focus_d2">4x25min Deep Work</string>
+    <string name="task_focus_d3">Review &amp; Journal</string>
+
+    <string name="tmpl_detox_title">Digital Detox</string>
+    <string name="tmpl_detox_desc">Regain your attention span.</string>
+    <string name="tmpl_detox_cat">Lifestyle</string>
+    <string name="task_detox_d1">No Social Media</string>
+    <string name="task_detox_d2">Phone in another room (1hr)</string>
+
+    <string name="tmpl_read_title">Daily Reading</string>
+    <string name="tmpl_read_desc">Build a reading habit.</string>
+    <string name="tmpl_read_cat">Learning</string>
+    <string name="task_read_d1">Read 10 Pages</string>
+    <string name="task_read_d2">Summarize Chapter</string>
 </resources>

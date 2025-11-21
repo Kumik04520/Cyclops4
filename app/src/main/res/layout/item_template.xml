@@ -2,76 +2,85 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="280dp"
-    android:layout_height="match_parent"
-    android:layout_marginEnd="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp"
     app:cardCornerRadius="12dp"
-    app:cardElevation="4dp">
+    app:cardElevation="3dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="12dp">
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="8dp">
 
             <TextView
-                android:id="@+id/tv_template_name"
-                android:layout_width="match_parent"
+                android:id="@+id/tv_template_category"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Template Name"
-                android:textSize="16sp"
+                android:text="Category"
+                android:textSize="10sp"
                 android:textStyle="bold"
-                android:layout_marginBottom="4dp" />
+                android:textColor="?attr/colorPrimary"
+                android:background="@drawable/bg_category_tag"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@android:drawable/star_on"
+                app:tint="#FFD700"
+                android:layout_marginEnd="2dp"/>
+
+            <TextView
+                android:id="@+id/tv_rating_text"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:id="@+id/tv_template_category"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Category"
-                    android:textSize="12sp"
-                    android:textColor="?attr/colorPrimary"
-                    android:background="@drawable/bg_category_tag"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:paddingTop="2dp"
-                    android:paddingBottom="2dp"
-                    android:layout_marginEnd="8dp" />
-
-                <TextView
-                    android:id="@+id/tv_cycle_length"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="7 Days"
-                    android:textSize="12sp"
-                    android:textColor="?android:attr/textColorSecondary" />
-
-            </LinearLayout>
+                android:text="4.8"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="#FFD700" />
 
         </LinearLayout>
 
         <TextView
+            android:id="@+id/tv_template_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Template Name"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
             android:id="@+id/tv_template_description"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:text="Description..."
-            android:textSize="14sp"
+            android:layout_height="wrap_content"
+            android:text="Description goes here..."
+            android:textSize="12sp"
             android:textColor="?android:attr/textColorSecondary"
+            android:maxLines="2"
             android:ellipsize="end"
-            android:maxLines="3"
-            android:layout_marginBottom="12dp" />
+            android:minLines="2"
+            android:layout_marginBottom="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -80,26 +89,24 @@
             android:gravity="center_vertical"
             android:layout_marginBottom="12dp">
 
-            <RatingBar
-                android:id="@+id/rating_bar"
+            <TextView
+                android:id="@+id/tv_cycle_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:numStars="5"
-                android:stepSize="0.1"
-                android:rating="4.5"
-                android:isIndicator="true"
-                android:scaleX="0.7"
-                android:scaleY="0.7"
-                android:transformPivotX="0dp"
-                android:layout_marginEnd="8dp" />
+                android:text="7 Days"
+                android:textSize="11sp"
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorSecondary"
+                android:layout_marginEnd="8dp"/>
 
             <TextView
                 android:id="@+id/tv_download_count"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="1.2k Uses"
-                android:textSize="10sp"
+                android:text="1.2k"
+                android:textSize="11sp"
+                android:gravity="end"
                 android:textColor="?android:attr/textColorSecondary" />
 
         </LinearLayout>
@@ -113,8 +120,14 @@
             android:textStyle="bold"
             android:backgroundTint="?attr/colorPrimary"
             android:textColor="@android:color/white"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp" />
+            android:insetTop="0dp"
+            android:insetBottom="0dp" />
+
+        <RatingBar
+            android:id="@+id/rating_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
