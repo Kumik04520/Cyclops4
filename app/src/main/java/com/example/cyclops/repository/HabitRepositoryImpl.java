@@ -124,4 +124,11 @@ public class HabitRepositoryImpl implements HabitRepository {
     public LiveData<List<HabitCycle>> getPopularHabitCycles() {
         return popularHabitsLiveData;
     }
+
+    @Override
+    public HabitCycle getHabitCycleByIdSync(String habitId) {
+        // 因为数据就在内存 Map 中，直接获取即可，不需要异步操作
+        return habitsMap.get(habitId);
+    }
 }
+

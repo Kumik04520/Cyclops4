@@ -12,11 +12,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.cyclops.R;
-import com.example.cyclops.viewmodel.TodayViewModel;
+import com.example.cyclops.model.HabitCycle;
+import com.example.cyclops.viewmodel.HabitViewModel; // 1. 改用 HabitViewModel
+
+import java.util.List;
 
 public class StatsFragment extends Fragment {
 
-    private TodayViewModel todayViewModel;
+    private HabitViewModel habitViewModel; // 2. 变量类型更改
     private TextView tvTotalHabits;
     private TextView tvTotalCompletions;
     private TextView tvBestStreak;
@@ -33,7 +36,8 @@ public class StatsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        todayViewModel = new ViewModelProvider(requireActivity()).get(TodayViewModel.class);
+        // 3. 获取 HabitViewModel 实例
+        habitViewModel = new ViewModelProvider(requireActivity()).get(HabitViewModel.class);
         observeViewModel();
     }
 
@@ -45,41 +49,37 @@ public class StatsFragment extends Fragment {
     }
 
     private void observeViewModel() {
-        todayViewModel.getTodayHabitsLiveData().observe(getViewLifecycleOwner(), habits -> {
-            if (habits != null) {
-                updateStats(habits.size(), todayViewModel.getCompletedCountLiveData().getValue());
-            }
-        });
-
-        todayViewModel.getCompletedCountLiveData().observe(getViewLifecycleOwner(), completedCount -> {
-            if (completedCount != null) {
-                updateStats(todayViewModel.getTotalCountLiveData().getValue(), completedCount);
-            }
-        });
-
-        todayViewModel.getTotalCountLiveData().observe(getViewLifecycleOwner(), totalCount -> {
-            if (totalCount != null) {
-                updateStats(totalCount, todayViewModel.getCompletedCountLiveData().getValue());
-            }
-        });
+        // 4. 调用正确的方法 getHabitsLiveData()
+        habitViewModel.getHabitsLiveData().observe(getViewLifecycleOwner(), this::calculateAndShowStats);
     }
 
-    private void updateStats(Integer totalCount, Integer completedCount) {
-        if (totalCount == null || completedCount == null) {
-            return;
+    // 统计核心逻辑 (保持不变)
+    private void calculateAndShowStats(List<HabitCycle> habits) {
+        if (habits == null) return;
+
+        int totalHabitsCount = habits.size();
+        int grandTotalCompletions = 0; // 所有习惯的任务完成总数
+        int maxGlobalStreak = 0;       // 所有习惯中最高的连续记录
+
+        for (HabitCycle habit : habits) {
+            // 累加每个习惯的 totalCompletions (小任务完成数)
+            grandTotalCompletions += habit.getTotalCompletions();
+
+            // 寻找最大的 bestStreak
+            if (habit.getBestStreak() > maxGlobalStreak) {
+                maxGlobalStreak = habit.getBestStreak();
+            }
         }
 
-        int totalHabits = totalCount;
-        int totalCompletions = completedCount;
+        // 计算成功率 (示例算法：为了展示效果，简单处理)
+        // 实际项目可根据 (完成数 / 预期天数) 计算
+        double successRate = totalHabitsCount > 0 ?
+                (grandTotalCompletions > 0 ? 100.0 : 0) : 0;
 
-        // The logic for bestStreak and successRate might need to be adjusted
-        // based on how you want to calculate them. For now, we'll use a simplified approach.
-        int bestStreak = 0; // This would require more complex logic to calculate accurately.
-        double successRate = totalHabits > 0 ? (double) totalCompletions / totalHabits * 100 : 0;
-
-        tvTotalHabits.setText(String.valueOf(totalHabits));
-        tvTotalCompletions.setText(String.valueOf(totalCompletions));
-        tvBestStreak.setText(String.valueOf(bestStreak)); // Placeholder
+        // 更新 UI
+        tvTotalHabits.setText(String.valueOf(totalHabitsCount));
+        tvTotalCompletions.setText(String.valueOf(grandTotalCompletions));
+        tvBestStreak.setText(String.valueOf(maxGlobalStreak));
         tvSuccessRate.setText(String.format("%.1f%%", successRate));
     }
 }

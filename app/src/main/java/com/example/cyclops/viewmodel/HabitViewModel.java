@@ -5,28 +5,31 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Transformations;
 
+import com.example.cyclops.HabitCycleEngine;
 import com.example.cyclops.model.HabitCycle;
 import com.example.cyclops.repository.HabitRepository;
 import com.example.cyclops.repository.RoomHabitRepository;
-import com.example.cyclops.HabitCycleEngine;
 
 import java.util.List;
 
 public class HabitViewModel extends AndroidViewModel {
-
+    private final MutableLiveData<String> _selectedHabitId = new MutableLiveData<>();
     private HabitRepository habitRepository;
     private LiveData<List<HabitCycle>> habitsLiveData;
-    private MutableLiveData<HabitCycle> selectedHabitLiveData;
     private MutableLiveData<String> errorMessageLiveData;
     private String currentSelectedHabitId;
+    private final LiveData<HabitCycle> selectedHabitLiveData;
 
     public HabitViewModel(Application application) {
         super(application);
         this.habitRepository = RoomHabitRepository.getInstance(application);
         this.habitsLiveData = habitRepository.getAllHabitCycles();
-        this.selectedHabitLiveData = new MutableLiveData<>();
         this.errorMessageLiveData = new MutableLiveData<>();
+        this.selectedHabitLiveData = Transformations.switchMap(_selectedHabitId, id -> {
+            return habitRepository.getHabitCycleById(id);
+        });
     }
 
     public LiveData<List<HabitCycle>> getHabitsLiveData() {
@@ -57,18 +60,7 @@ public class HabitViewModel extends AndroidViewModel {
     }
 
     public void selectHabitCycle(String habitId) {
-        currentSelectedHabitId = habitId;
-        LiveData<HabitCycle> habitLiveData = habitRepository.getHabitCycleById(habitId);
-        habitLiveData.observeForever(new androidx.lifecycle.Observer<HabitCycle>() {
-            @Override
-            public void onChanged(HabitCycle habit) {
-                if (habit != null) {
-                    selectedHabitLiveData.setValue(habit);
-                    // 移除观察者避免重复调用
-                    habitLiveData.removeObserver(this);
-                }
-            }
-        });
+            _selectedHabitId.setValue(habitId);
     }
 
     public void completeDay(String habitId, int dayNumber) {

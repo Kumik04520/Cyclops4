@@ -10,7 +10,6 @@ import java.util.List;
 
 public class Mapper {
 
-    // 将HabitCycleEntity转换为HabitCycle
     public static HabitCycle toHabitCycle(HabitCycleEntity entity) {
         if (entity == null) return null;
 
@@ -20,12 +19,21 @@ public class Mapper {
         habitCycle.setDescription(entity.description);
         habitCycle.setCycleLength(entity.cycleLength);
         habitCycle.setUserId(entity.userId);
-        habitCycle.setStartDate(entity.startDate.getTime());
+
+        if (entity.startDate != null) {
+            habitCycle.setStartDate(entity.startDate.getTime());
+        }
+
         habitCycle.setPublic(entity.isPublic);
         habitCycle.setCurrentStreak(entity.currentStreak);
+        habitCycle.setBestStreak(entity.bestStreak);
         habitCycle.setTotalCompletions(entity.totalCompletions);
 
-        // 转换DayTask列表
+        // [新增] 将数据库的时间传给 Model
+        if (entity.lastCompletionDate != null) {
+            habitCycle.setLastCompletionDate(entity.lastCompletionDate.getTime());
+        }
+
         if (entity.dayTasks != null) {
             List<DayTask> dayTasks = new ArrayList<>();
             for (DayTaskEntity taskEntity : entity.dayTasks) {
@@ -37,7 +45,6 @@ public class Mapper {
         return habitCycle;
     }
 
-    // 将HabitCycle转换为HabitCycleEntity
     public static HabitCycleEntity toHabitCycleEntity(HabitCycle habitCycle) {
         if (habitCycle == null) return null;
 
@@ -50,11 +57,16 @@ public class Mapper {
         entity.startDate = new java.util.Date(habitCycle.getStartDate());
         entity.isPublic = habitCycle.isPublic();
         entity.currentStreak = habitCycle.getCurrentStreak();
+        entity.bestStreak = habitCycle.getBestStreak();
         entity.totalCompletions = habitCycle.getTotalCompletions();
         entity.createdAt = new java.util.Date();
         entity.updatedAt = new java.util.Date();
 
-        // 转换DayTask列表
+        // [新增] 将 Model 的时间存入数据库
+        if (habitCycle.getLastCompletionDate() > 0) {
+            entity.lastCompletionDate = new java.util.Date(habitCycle.getLastCompletionDate());
+        }
+
         if (habitCycle.getDayTasks() != null) {
             List<DayTaskEntity> dayTaskEntities = new ArrayList<>();
             for (DayTask dayTask : habitCycle.getDayTasks()) {
@@ -66,19 +78,15 @@ public class Mapper {
         return entity;
     }
 
-    // 将DayTaskEntity转换为DayTask
     public static DayTask toDayTask(DayTaskEntity entity) {
         if (entity == null) return null;
-
         DayTask dayTask = new DayTask(entity.dayNumber, entity.taskName);
         dayTask.setCompleted(entity.completed);
         return dayTask;
     }
 
-    // 将DayTask转换为DayTaskEntity
     public static DayTaskEntity toDayTaskEntity(DayTask dayTask, String habitCycleId) {
         if (dayTask == null) return null;
-
         DayTaskEntity entity = new DayTaskEntity();
         entity.habitCycleId = habitCycleId;
         entity.dayNumber = dayTask.getDayNumber();
@@ -87,7 +95,6 @@ public class Mapper {
         return entity;
     }
 
-    // 批量转换HabitCycleEntity列表
     public static List<HabitCycle> toHabitCycleList(List<HabitCycleEntity> entities) {
         List<HabitCycle> habitCycles = new ArrayList<>();
         if (entities != null) {

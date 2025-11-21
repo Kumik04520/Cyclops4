@@ -115,7 +115,7 @@ public class TodayViewModel extends AndroidViewModel {
                 android.util.Log.d("TodayViewModel", "开始完成任务: " + habitId);
 
                 // Use synchronous method to get habit from repository
-                HabitCycle habitToComplete = ((RoomHabitRepository) habitRepository).getHabitCycleByIdSync(habitId);
+                HabitCycle habitToComplete = habitRepository.getHabitCycleByIdSync(habitId);
 
                 if (habitToComplete != null) {
                     android.util.Log.d("TodayViewModel", "找到习惯: " + habitToComplete.getName());

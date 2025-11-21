@@ -14,4 +14,5 @@ public interface HabitRepository {
     LiveData<HabitCycle> getHabitCycleById(String habitId);
     void completeDay(String habitId, int dayNumber);
     LiveData<List<HabitCycle>> getPopularHabitCycles();
+    HabitCycle getHabitCycleByIdSync(String habitId);
 }

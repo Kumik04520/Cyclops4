@@ -2,6 +2,7 @@ package com.example.cyclops.database.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity(tableName = "habit_cycles")
 public class HabitCycleEntity {
     @PrimaryKey
-    @NonNull  // 添加这个注解
+    @NonNull
     public String id;
 
     public String name;
@@ -31,6 +32,10 @@ public class HabitCycleEntity {
 
     public boolean isPublic;
     public int currentStreak;
+
+    // [新增] 最佳连续次数
+    public int bestStreak;
+
     public int totalCompletions;
 
     @TypeConverters(DataConverter.class)
@@ -44,10 +49,12 @@ public class HabitCycleEntity {
 
     // 空构造函数 - Room需要
     public HabitCycleEntity() {
-        this.id = "";  // 提供默认值
+        this.id = "";
+        this.bestStreak = 0; // 初始化
     }
 
-    // 业务构造函数 - 更新以包含lastCompletionDate
+    // 业务构造函数
+    @Ignore // 确保添加了 @Ignore，避免 Room 警告
     public HabitCycleEntity(@NonNull String id, String name, String description, int cycleLength,
                             List<DayTaskEntity> dayTasks, String userId) {
         this.id = id;
@@ -59,28 +66,10 @@ public class HabitCycleEntity {
         this.startDate = new Date();
         this.isPublic = false;
         this.currentStreak = 0;
+        this.bestStreak = 0; // 初始化
         this.totalCompletions = 0;
         this.lastCompletionDate = null;
         this.createdAt = new Date();
         this.updatedAt = new Date();
-    }
-
-    // 可选：添加getter和setter方法
-    public Date getLastCompletionDate() {
-        return lastCompletionDate;
-    }
-
-    public void setLastCompletionDate(Date lastCompletionDate) {
-        this.lastCompletionDate = lastCompletionDate;
-    }
-
-    // 添加 id 的 getter 和 setter
-    @NonNull
-    public String getId() {
-        return id;
-    }
-
-    public void setId(@NonNull String id) {
-        this.id = id;
     }
 }

@@ -19,6 +19,9 @@ import com.example.cyclops.R;
 import com.example.cyclops.adapter.HabitCycleAdapter;
 import com.example.cyclops.model.HabitCycle;
 import com.example.cyclops.viewmodel.HabitViewModel;
+import com.example.cyclops.HabitCycleEngine; // 导入引擎
+
+import java.util.ArrayList;
 
 public class HabitListFragment extends Fragment {
 
@@ -43,49 +46,42 @@ public class HabitListFragment extends Fragment {
         observeViewModel();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        // LiveData will automatically update when data changes, no need to manually reload
-    }
-
     private void initViews(View view) {
         recyclerView = view.findViewById(R.id.recycler_view_habits);
         tvEmptyState = view.findViewById(R.id.tv_empty_state);
     }
 
     private void setupRecyclerView() {
-        adapter = new HabitCycleAdapter(null, new HabitCycleAdapter.OnHabitClickListener() {
+        // 初始化 Adapter 并正确实现两个点击回调
+        adapter = new HabitCycleAdapter(new ArrayList<>(), new HabitCycleAdapter.OnHabitClickListener() {
             @Override
             public void onHabitClick(HabitCycle habitCycle) {
-                // 打开习惯详情
                 openHabitDetail(habitCycle);
             }
 
             @Override
             public void onCompleteClick(HabitCycle habitCycle) {
-                // 完成当前任务
-                int currentDay = habitViewModel.getCurrentDayForHabit(habitCycle);
+                // [修复] 按钮点击逻辑
+                // 1. 计算当前是第几天
+                int currentDay = HabitCycleEngine.calculateCurrentDay(habitCycle);
+
+                // 2. 调用 ViewModel 完成打卡
                 habitViewModel.completeDay(habitCycle.getId(), currentDay);
+
+                // 3. 给用户反馈
+                Toast.makeText(getContext(), "正在打卡: " + habitCycle.getName(), Toast.LENGTH_SHORT).show();
             }
         });
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     private void observeViewModel() {
         habitViewModel.getHabitsLiveData().observe(getViewLifecycleOwner(), habits -> {
             if (habits != null) {
                 adapter.updateData(habits);
-                android.util.Log.d("HabitFragment", "习惯列表更新，数量: " + habits.size());
-
-                // 打印每个习惯的状态用于调试
-                for (HabitCycle habit : habits) {
-                    android.util.Log.d("HabitFragment", "习惯: " + habit.getName() +
-                            ", 连续天数: " + habit.getCurrentStreak() +
-                            ", 完成次数: " + habit.getTotalCompletions());
-                }
+                updateEmptyState(habits.isEmpty());
             }
         });
 
@@ -107,7 +103,6 @@ public class HabitListFragment extends Fragment {
     }
 
     private void openHabitDetail(HabitCycle habitCycle) {
-        // 打开习惯详情页面的逻辑
         Intent intent = new Intent(getContext(), HabitDetailActivity.class);
         intent.putExtra("HABIT_ID", habitCycle.getId());
         startActivity(intent);
