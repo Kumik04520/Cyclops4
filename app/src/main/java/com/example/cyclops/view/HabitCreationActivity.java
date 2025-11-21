@@ -29,6 +29,7 @@ public class HabitCreationActivity extends AppCompatActivity {
     private Spinner spinnerCycleLength;
     private LinearLayout layoutDayTasks;
     private Button btnCreateHabit;
+    private Button btnBack; // [新增] 声明返回按钮
 
     private HabitViewModel habitViewModel;
     private int currentCycleLength = 3;
@@ -51,6 +52,7 @@ public class HabitCreationActivity extends AppCompatActivity {
         spinnerCycleLength = findViewById(R.id.spinner_cycle_length);
         layoutDayTasks = findViewById(R.id.layout_day_tasks);
         btnCreateHabit = findViewById(R.id.btn_create_habit);
+        btnBack = findViewById(R.id.btn_back); // [新增] 初始化返回按钮
     }
 
     private void setupSpinner() {
@@ -73,12 +75,13 @@ public class HabitCreationActivity extends AppCompatActivity {
     private void updateDayTasksLayout() {
         layoutDayTasks.removeAllViews();
         for (int i = 1; i <= currentCycleLength; i++) {
+            // 这里使用的是之前让你创建的 item_day_task_creation.xml
             View dayTaskView = getLayoutInflater().inflate(R.layout.item_day_task_creation, layoutDayTasks, false);
 
             TextView tvDayLabel = dayTaskView.findViewById(R.id.tv_day_label);
             EditText etTaskName = dayTaskView.findViewById(R.id.et_task_name);
 
-            // [修改] 使用资源字符串
+            // 使用资源字符串
             tvDayLabel.setText(getString(R.string.day_format, i));
             etTaskName.setHint(getString(R.string.hint_day_task, i));
             etTaskName.setTag(i);
@@ -89,6 +92,9 @@ public class HabitCreationActivity extends AppCompatActivity {
 
     private void setupClickListeners() {
         btnCreateHabit.setOnClickListener(v -> createHabitCycle());
+
+        // [新增] 返回按钮点击事件
+        btnBack.setOnClickListener(v -> finish());
     }
 
     private void createHabitCycle() {
@@ -96,7 +102,6 @@ public class HabitCreationActivity extends AppCompatActivity {
         String habitDescription = etHabitDescription.getText().toString().trim();
 
         if (TextUtils.isEmpty(habitName)) {
-            // [修改] 使用资源ID
             Toast.makeText(this, R.string.toast_enter_name, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -108,7 +113,6 @@ public class HabitCreationActivity extends AppCompatActivity {
             String taskName = etTaskName.getText().toString().trim();
 
             if (TextUtils.isEmpty(taskName)) {
-                // [修改] 默认任务名国际化
                 taskName = getString(R.string.default_task_name, (i + 1));
             }
 
@@ -124,7 +128,6 @@ public class HabitCreationActivity extends AppCompatActivity {
 
         habitViewModel.addHabitCycle(habitCycle);
 
-        // [修改] 成功提示
         Toast.makeText(this, R.string.toast_habit_created, Toast.LENGTH_SHORT).show();
         finish();
     }

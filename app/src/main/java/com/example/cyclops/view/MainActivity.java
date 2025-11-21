@@ -39,12 +39,17 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager() {
         MainPagerAdapter pagerAdapter = new MainPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(4); // 保留所有 Fragment 实例
+        viewPager.setOffscreenPageLimit(4);
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+                // 逻辑修改：
+                // Position 0: Today (显示 FAB)
+                // Position 1: Habits (显示 FAB)
+                // Position 2: Stats  (显示 FAB -> 用户希望在这里也能添加习惯)
+                // Position 3: Discover (隐藏 FAB -> 这里主要用于导入模板)
                 if (position == 3) {
                     fab.hide();
                 } else {
@@ -58,16 +63,16 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position) {
                 case 0:
-                    tab.setText(R.string.tab_today); // 修改
+                    tab.setText(R.string.tab_today);
                     break;
                 case 1:
-                    tab.setText(R.string.tab_habits); // 修改
+                    tab.setText(R.string.tab_habits);
                     break;
                 case 2:
-                    tab.setText(R.string.tab_stats); // 修改
+                    tab.setText(R.string.tab_stats);
                     break;
                 case 3:
-                    tab.setText(R.string.tab_discover); // 修改
+                    tab.setText(R.string.tab_discover);
                     break;
             }
         }).attach();
@@ -77,16 +82,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int currentPage = viewPager.getCurrentItem();
-                switch (currentPage) {
-                    case 0:
-                    case 1:
-                        openHabitCreation();
-                        break;
-                    case 2:
-                        shareStats();
-                        break;
-                }
+                // 逻辑修改：
+                // 无论当前在 "今日"、"习惯" 还是 "统计" 页面，
+                // 点击加号按钮都统一跳转到创建习惯页面。
+                openHabitCreation();
             }
         });
     }
@@ -96,11 +95,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // 之前的 shareStats 方法如果不再使用，可以保留为空或删除
     private void shareStats() {
-        // 分享功能
-        // Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        // shareIntent.setType("text/plain");
-        // shareIntent.putExtra(Intent.EXTRA_TEXT, "看看我在Cyclops上的习惯统计！");
-        // startActivity(Intent.createChooser(shareIntent, "分享统计"));
+        // 分享功能预留
     }
 }
